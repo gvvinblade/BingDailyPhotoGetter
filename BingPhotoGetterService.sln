@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BingPhotoArchiveRssService", "BingPhotoArchiveRssService\BingPhotoArchiveRssService.csproj", "{28388CA0-7284-46CC-9AB7-EE9F6CE6860B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BingPhotoGetterService", "BingPhotoGetterService\BingPhotoGetterService.csproj", "{28388CA0-7284-46CC-9AB7-EE9F6CE6860B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BingPhotoArchiveRssService.Domain
+namespace BingPhotoGetterService.Domain
 {
-    class Image
+    internal class Image
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -15,7 +15,7 @@ namespace BingPhotoArchiveRssService.Domain
         public string Name => Url?.Substring(Url.LastIndexOf("/", StringComparison.Ordinal) + 1);
     }
 
-    class Response
+    internal class Response
     {
         public List<Image> Images { get; set; }
     }

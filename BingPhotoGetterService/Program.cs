@@ -4,11 +4,11 @@ using Topshelf;
 using Topshelf.Common.Logging;
 using Topshelf.Ninject;
 
-namespace BingPhotoArchiveRssService
+namespace BingPhotoGetterService
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
 
             // This will ensure that future calls to Directory.GetCurrentDirectory()
@@ -17,8 +17,8 @@ namespace BingPhotoArchiveRssService
 
             // Specify the base name, display name and description for the service, as it is registered in the services control manager.
             // This information is visible through the Windows Service Monitor
-            const string serviceName = "BingPhotoArchiveRssService";
-            const string displayName = "Bing photo archive RSS service";
+            const string serviceName = "BingPhotoGetterService";
+            const string displayName = "Bing photo getter service";
             const string description = "A .NET Windows Service.";
 
             HostFactory.Run(x =>
@@ -48,7 +48,7 @@ namespace BingPhotoArchiveRssService
 
                 //=> Service Identity
 
-                x.RunAsLocalSystem();
+                x.RunAsPrompt();
                 x.StartAutomaticallyDelayed();
                 x.EnablePauseAndContinue();
                 x.EnableShutdown();
