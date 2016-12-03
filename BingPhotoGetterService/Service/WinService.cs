@@ -5,6 +5,7 @@ using System.Timers;
 using BingPhotoGetterService.Configuration;
 using BingPhotoGetterService.Domain;
 using Common.Logging;
+using Ninject.Infrastructure.Language;
 using RestSharp;
 using RestSharp.Extensions;
 using Topshelf;
@@ -98,18 +99,25 @@ namespace BingPhotoGetterService.Service
                     request.AddParameter("n", _photosCount);
                     var restResponse = _client.Execute<Response>(request).Data;
 
-                    var iEnumerable = _targetDirectory.EnumerateFiles().Select(file => file.Name);
-                    var files = iEnumerable as string[] ?? iEnumerable.ToArray();
+        
 
-                    foreach (var image in restResponse.Images)
-                        if (!files.Contains(image.Name))
-                            _client.DownloadData(new RestRequest(image.Url)).SaveAs($"{_targetDirectory.FullName}/{image.Name}");
+                    var files = _targetDirectory.EnumerateFiles().Select(file => file.Name);
+                    restResponse.Images.Where(image => !files.Contains(image.Name)).Map(Download);
+
+                    var images = restResponse.Images.Select(image => image.Name);
+                    _targetDirectory.EnumerateFiles().Where(file => !images.Contains(file.Name)).Map(file => file.Delete());
+
                 }
                 catch (Exception e)
                 {
                     _log.Error(e);
                 }
             _lastExecutionTime = DateTime.Now;
+        }
+
+        private void Download(Image image)
+        {
+            _client.DownloadData(new RestRequest(image.Url)).SaveAs($"{_targetDirectory.FullName}/{image.Name}");
         }
     }
 }
