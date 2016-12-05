@@ -36,7 +36,7 @@ namespace BingPhotoGetterService.Service
 
             _log = iLog;
             _client = client;
-            _timer = new Timer() {Interval = 1000};
+            _timer = new Timer() {Interval = 10000};
             _timer.Elapsed += (sender, args) => GetPhotos();
 
         }
