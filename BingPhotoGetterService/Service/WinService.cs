@@ -44,9 +44,8 @@ namespace BingPhotoGetterService.Service
         public bool Start(HostControl hostControl)
         {
             _log.Info($"{nameof(WinService)} Start command received.");
-            Start();
-            GetPhotos();
-            return true;
+
+            return Start();
         }
 
         public bool Stop(HostControl hostControl)
