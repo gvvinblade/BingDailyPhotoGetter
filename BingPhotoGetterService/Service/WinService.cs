@@ -90,27 +90,31 @@ namespace BingPhotoGetterService.Service
 
         private void GetPhotos()
         {
-            if ((DateTime.Now - _lastExecutionTime).TotalSeconds >= _executionInterval)
-                try
-                {
-                    var request = new RestRequest("/HPImageArchive.aspx", Method.GET);
-                    request.AddParameter("format", "js");
-                    request.AddParameter("n", _photosCount);
-                    var restResponse = _client.Execute<Response>(request).Data;
+            if (((DateTime.Now - _lastExecutionTime).TotalSeconds < _executionInterval)) return;
 
-        
+            try
+            {
+                var request = new RestRequest("/HPImageArchive.aspx", Method.GET);
+                request.AddParameter("format", "js");
+                request.AddParameter("n", _photosCount);
+                var restResponse = _client.Execute<Response>(request).Data;
 
-                    var files = _targetDirectory.EnumerateFiles().Select(file => file.Name);
-                    restResponse.Images.Where(image => !files.Contains(image.Name)).Map(Download);
 
-                    var images = restResponse.Images.Select(image => image.Name);
-                    _targetDirectory.EnumerateFiles().Where(file => !images.Contains(file.Name)).Map(file => file.Delete());
 
-                }
-                catch (Exception e)
-                {
-                    _log.Error(e);
-                }
+                var files = _targetDirectory.EnumerateFiles().Select(file => file.Name);
+                restResponse.Images.Where(image => !files.Contains(image.Name)).Map(Download);
+
+                var images = restResponse.Images.Select(image => image.Name);
+                _targetDirectory.EnumerateFiles()
+                    .Where(file => !images.Contains(file.Name))
+                    .Map(file => file.Delete());
+
+            }
+            catch (Exception e)
+            {
+                _log.Error(e);
+            }
+
             _lastExecutionTime = DateTime.Now;
         }
 
